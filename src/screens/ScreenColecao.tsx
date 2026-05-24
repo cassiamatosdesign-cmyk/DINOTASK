@@ -2,6 +2,44 @@ import { useState } from 'react';
 import { RARITIES, getRarityById } from '../lib/rarities';
 import type { Journey, Rarity, Screen } from '../types';
 
+// Card de costas — exibido quando o dino ainda não foi conquistado
+function CardBack() {
+  return (
+    <div style={{
+      width: '100%',
+      aspectRatio: '2 / 3',
+      borderRadius: 'var(--r-2xl)',
+      background: 'linear-gradient(145deg, rgba(18,26,44,1) 0%, rgba(10,15,30,1) 100%)',
+      border: '1px solid rgba(255,255,255,0.07)',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      position: 'relative',
+      overflow: 'hidden',
+    }}>
+      {/* Padrão de pontos */}
+      <div style={{
+        position: 'absolute', inset: 0,
+        backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.045) 1px, transparent 1px)',
+        backgroundSize: '20px 20px',
+      }} />
+      {/* Borda interna decorativa */}
+      <div style={{
+        position: 'absolute', inset: 16,
+        border: '1px solid rgba(255,255,255,0.05)',
+        borderRadius: 'calc(var(--r-2xl) - 6px)',
+      }} />
+      {/* Conteúdo central */}
+      <div style={{ textAlign: 'center', position: 'relative', zIndex: 1, padding: '0 20px' }}>
+        <div style={{ fontSize: 56, marginBottom: 14, opacity: 0.12 }}>🦕</div>
+        <div style={{ fontSize: 22, color: 'var(--fg3)', opacity: 0.2, letterSpacing: 10 }}>???</div>
+        <div style={{ fontSize: 10, color: 'var(--fg3)', marginTop: 12, opacity: 0.18, letterSpacing: 3, textTransform: 'uppercase' }}>DinoTask</div>
+      </div>
+    </div>
+  );
+}
+
 interface Props {
   journeys: Journey[];
   onNavigate: (s: Screen) => void;
@@ -63,38 +101,52 @@ export function ScreenColecao({ journeys, onNavigate }: Props) {
         </div>
 
         {/* Card do dino */}
-        <div style={{ padding: '0 20px 24px' }}>
+        <div style={{ padding: '0 16px 24px' }}>
           {hasAny ? (
-            earned.map((journey, i) => (
-              <div key={journey.id} className="fade-up" style={{ animationDelay: `${i * 0.08}s`, marginBottom: 16 }}>
-                {/* Card colecionável */}
-                <div style={{ borderRadius: 'var(--r-2xl)', overflow: 'hidden', position: 'relative', border: `1px solid ${selected.glowColor}`, boxShadow: `0 0 24px ${selected.glowColor}` }}>
-                  <img src={selected.cardImage} alt={selected.dinoName}
-                    style={{ width: '100%', display: 'block', objectFit: 'cover' }}
-                  />
+            earned.length === 1 ? (
+              /* 1 card → largura total */
+              <div className="fade-up">
+                <div style={{ borderRadius: 'var(--r-2xl)', overflow: 'hidden', border: `1px solid ${selected.glowColor}`, boxShadow: `0 0 28px ${selected.glowColor}` }}>
+                  <img src={selected.cardImage} alt={selected.dinoName} style={{ width: '100%', display: 'block', objectFit: 'cover' }} />
                 </div>
-                {/* Info + compartilhar */}
                 <div style={{ marginTop: 12, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 4px' }}>
                   <div>
-                    <div style={{ fontSize: 13, color: 'var(--fg2)' }}>Semana {journey.weekNumber} · {journey.tasksCompleted} tarefas</div>
-                    <div style={{ fontSize: 11, color: 'var(--fg3)', marginTop: 2 }}>{journey.dateRange}</div>
+                    <div style={{ fontSize: 13, color: 'var(--fg2)' }}>Semana {earned[0].weekNumber} · {earned[0].tasksCompleted} tarefas</div>
+                    <div style={{ fontSize: 11, color: 'var(--fg3)', marginTop: 2 }}>{earned[0].dateRange}</div>
                   </div>
-                  <button
-                    onClick={() => { setSharing(journey); setCopied(false); }}
+                  <button onClick={() => { setSharing(earned[0]); setCopied(false); }}
                     style={{ background: selected.bg, border: `1px solid ${selected.glowColor}`, borderRadius: 'var(--r-full)', padding: '8px 16px', color: selected.color, fontSize: 12, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit', minHeight: 'unset' }}
-                  >
-                    ↑ Compartilhar
-                  </button>
+                  >↑ Compartilhar</button>
                 </div>
               </div>
-            ))
+            ) : (
+              /* 2+ cards → grid 2 colunas; último ímpar fica centralizado */
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                {earned.map((journey, i) => {
+                  const isLastOdd = earned.length % 2 === 1 && i === earned.length - 1;
+                  return (
+                    <div key={journey.id} className="fade-up"
+                      style={{ animationDelay: `${i * 0.07}s`, gridColumn: isLastOdd ? '1 / -1' : 'auto', maxWidth: isLastOdd ? 200 : 'none', margin: isLastOdd ? '0 auto' : 0, width: '100%' }}
+                    >
+                      <div style={{ borderRadius: 'var(--r-xl)', overflow: 'hidden', border: `1px solid ${selected.glowColor}`, boxShadow: `0 0 12px ${selected.glowColor}` }}>
+                        <img src={selected.cardImage} alt={selected.dinoName} style={{ width: '100%', display: 'block', objectFit: 'cover' }} />
+                      </div>
+                      <div style={{ marginTop: 6, padding: '0 2px' }}>
+                        <div style={{ fontSize: 11, color: 'var(--fg2)' }}>Sem. {journey.weekNumber} · {journey.tasksCompleted} tarefas</div>
+                        <button onClick={() => { setSharing(journey); setCopied(false); }}
+                          style={{ marginTop: 6, width: '100%', background: selected.bg, border: `1px solid ${selected.glowColor}`, borderRadius: 'var(--r-lg)', padding: '6px 0', color: selected.color, fontSize: 10, fontWeight: 600, cursor: 'pointer', fontFamily: 'inherit', minHeight: 'unset' }}
+                        >↑ Compartilhar</button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )
           ) : (
-            <div style={{ textAlign: 'center', padding: '40px 20px' }}>
-              {/* Card bloqueado */}
-              <div style={{ borderRadius: 'var(--r-2xl)', overflow: 'hidden', position: 'relative', border: '1px solid var(--border)', marginBottom: 20, opacity: 0.3, filter: 'grayscale(1) brightness(0.4)' }}>
-                <img src={selected.cardImage} alt={selected.dinoName}
-                  style={{ width: '100%', display: 'block', objectFit: 'cover' }}
-                />
+            /* Não conquistado → card de costas */
+            <div style={{ textAlign: 'center' }}>
+              <div style={{ maxWidth: 280, margin: '0 auto 20px' }}>
+                <CardBack />
               </div>
               <p className="font-serif" style={{ fontSize: 16, color: 'var(--fg3)', fontStyle: 'italic', lineHeight: 1.7 }}>
                 "{selected.whisper}"
