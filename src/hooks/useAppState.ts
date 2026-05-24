@@ -68,10 +68,11 @@ export function useAppState() {
   }, []);
 
   // Move tarefas com data anterior a hoje para pendências automaticamente
+  // Roda sempre que tasks mudam — o guard "overdue.length === 0" evita loop infinito
   useEffect(() => {
     const today = todayISO();
     setState(p => {
-      const overdue = p.tasks.filter(t => !t.done && t.date < today);
+      const overdue = p.tasks.filter(t => !t.done && t.date && t.date < today);
       if (overdue.length === 0) return p;
       const overdueIds = new Set(overdue.map(t => t.id));
       const existingPendingIds = new Set(p.pendingTasks.map(pt => pt.id));
@@ -84,7 +85,7 @@ export function useAppState() {
         pendingTasks: [...p.pendingTasks, ...newPending],
       };
     });
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [state.tasks]); // reavalia sempre que a lista de tarefas muda
 
   useEffect(() => {
     if (doneTasks.length < 10) return;
