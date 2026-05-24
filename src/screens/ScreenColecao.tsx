@@ -5,38 +5,11 @@ import type { Journey, Rarity, Screen } from '../types';
 // Card de costas — exibido quando o dino ainda não foi conquistado
 function CardBack() {
   return (
-    <div style={{
-      width: '100%',
-      aspectRatio: '2 / 3',
-      borderRadius: 'var(--r-2xl)',
-      background: 'linear-gradient(145deg, rgba(18,26,44,1) 0%, rgba(10,15,30,1) 100%)',
-      border: '1px solid rgba(255,255,255,0.07)',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      position: 'relative',
-      overflow: 'hidden',
-    }}>
-      {/* Padrão de pontos */}
-      <div style={{
-        position: 'absolute', inset: 0,
-        backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.045) 1px, transparent 1px)',
-        backgroundSize: '20px 20px',
-      }} />
-      {/* Borda interna decorativa */}
-      <div style={{
-        position: 'absolute', inset: 16,
-        border: '1px solid rgba(255,255,255,0.05)',
-        borderRadius: 'calc(var(--r-2xl) - 6px)',
-      }} />
-      {/* Conteúdo central */}
-      <div style={{ textAlign: 'center', position: 'relative', zIndex: 1, padding: '0 20px' }}>
-        <div style={{ fontSize: 56, marginBottom: 14, opacity: 0.12 }}>🦕</div>
-        <div style={{ fontSize: 22, color: 'var(--fg3)', opacity: 0.2, letterSpacing: 10 }}>???</div>
-        <div style={{ fontSize: 10, color: 'var(--fg3)', marginTop: 12, opacity: 0.18, letterSpacing: 3, textTransform: 'uppercase' }}>DinoTask</div>
-      </div>
-    </div>
+    <img
+      src="/collection/card-back.png"
+      alt="Card bloqueado"
+      style={{ width: '100%', display: 'block', objectFit: 'cover', borderRadius: 'var(--r-2xl)' }}
+    />
   );
 }
 
