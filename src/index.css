@@ -1,0 +1,210 @@
+/* ── DinoTask — Design System Global ──────────────────────────────────────── */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&display=swap');
+
+/* ── Tokens ─────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Background scale */
+  --bg:          oklch(0.16 0.018 260);
+  --bg2:         oklch(0.18 0.020 260);
+  --bg3:         oklch(0.20 0.020 262);
+  --bg4:         oklch(0.22 0.022 262);
+  --bg5:         oklch(0.24 0.022 264);
+
+  /* Foreground */
+  --fg:          oklch(0.97 0.010 250);
+  --fg2:         oklch(0.78 0.015 255);
+  --fg3:         oklch(0.55 0.012 258);
+  --fg4:         oklch(0.40 0.010 258);
+
+  /* Primary */
+  --primary:     oklch(0.82 0.14 145);
+  --primary-dim: oklch(0.66 0.14 145);
+
+  /* Rarity palette */
+  --r-comum:     oklch(0.78 0.16 145);
+  --r-raro:      oklch(0.72 0.16 240);
+  --r-epico:     oklch(0.70 0.18 300);
+  --r-lendario:  oklch(0.82 0.16 85);
+  --r-celestial: oklch(0.90 0.06 300);
+
+  /* Glass surfaces */
+  --glass:       rgba(255, 255, 255, 0.04);
+  --glass-b:     rgba(255, 255, 255, 0.07);
+  --glass-hover: rgba(255, 255, 255, 0.07);
+
+  /* Borders */
+  --border:      rgba(255, 255, 255, 0.08);
+  --border2:     rgba(255, 255, 255, 0.13);
+
+  /* Radius */
+  --r-sm:   8px;
+  --r-md:   12px;
+  --r-lg:   16px;
+  --r-xl:   20px;
+  --r-2xl:  24px;
+  --r-3xl:  28px;
+  --r-full: 9999px;
+
+  /* Nav height */
+  --nav-h: 72px;
+  --nav-pb: 12px;
+}
+
+/* ── Reset ───────────────────────────────────────────────────────────────── */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  outline: none;
+}
+
+input, textarea {
+  font-family: inherit;
+  outline: none;
+}
+
+/* ── Scrollbar ───────────────────────────────────────────────────────────── */
+
+::-webkit-scrollbar { display: none; }
+
+/* ── Typography helpers ──────────────────────────────────────────────────── */
+
+.font-serif { font-family: 'Fraunces', Georgia, serif; }
+
+/* ── Glass primitives ────────────────────────────────────────────────────── */
+
+.glass-card {
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+}
+
+.glass-hero {
+  background: linear-gradient(
+    135deg,
+    rgba(20, 35, 60, 0.95) 0%,
+    rgba(15, 22, 36, 0.98) 100%
+  );
+  border: 1px solid var(--border2);
+  border-radius: var(--r-2xl);
+  backdrop-filter: blur(24px) saturate(140%);
+  -webkit-backdrop-filter: blur(24px) saturate(140%);
+}
+
+/* ── Animations ──────────────────────────────────────────────────────────── */
+
+@keyframes breath {
+  0%, 100% { transform: scale(1) translateY(0); }
+  50%       { transform: scale(1.04) translateY(-5px); }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slide-up {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.5; }
+  50%       { opacity: 1; }
+}
+
+.breath    { animation: breath 6s ease-in-out infinite; }
+.fade-up   { animation: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.slide-up  { animation: slide-up 0.38s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+/* Stagger helpers */
+.delay-1 { animation-delay: 0.06s; }
+.delay-2 { animation-delay: 0.12s; }
+.delay-3 { animation-delay: 0.18s; }
+.delay-4 { animation-delay: 0.24s; }
+.delay-5 { animation-delay: 0.30s; }
+
+/* ── Rarity utility classes ──────────────────────────────────────────────── */
+
+.rarity-comum    { color: var(--r-comum);    }
+.rarity-raro     { color: var(--r-raro);     }
+.rarity-epico    { color: var(--r-epico);    }
+.rarity-lendario { color: var(--r-lendario); }
+.rarity-celestial{ color: var(--r-celestial);}
+
+/* ── Badge ───────────────────────────────────────────────────────────────── */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  padding: 3px 9px;
+  border-radius: var(--r-full);
+}
+
+.badge-comum     { color: var(--r-comum);     background: rgba(93,  232, 160, 0.12); border: 1px solid rgba(93,  232, 160, 0.22); }
+.badge-raro      { color: var(--r-raro);      background: rgba(96,  165, 250, 0.12); border: 1px solid rgba(96,  165, 250, 0.22); }
+.badge-epico     { color: var(--r-epico);     background: rgba(192, 132, 252, 0.12); border: 1px solid rgba(192, 132, 252, 0.22); }
+.badge-lendario  { color: var(--r-lendario);  background: rgba(251, 191,  36, 0.12); border: 1px solid rgba(251, 191,  36, 0.22); }
+.badge-celestial { color: var(--r-celestial); background: rgba(240, 171, 252, 0.12); border: 1px solid rgba(240, 171, 252, 0.22); }
+
+/* ── Section label ───────────────────────────────────────────────────────── */
+
+.section-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.6px;
+  color: var(--fg3);
+  text-transform: uppercase;
+  padding: 0 20px 10px;
+}
+
+/* ── Melhorias de legibilidade v4 ───────────────────────────────────────── */
+
+/* Textos pequenos com mais contraste */
+.section-label {
+  color: oklch(0.62 0.012 258);
+}
+
+/* Aumentar área de toque mínima */
+button {
+  min-height: 44px;
+}
+
+/* Micro animação de conclusão de tarefa */
+@keyframes task-complete {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(0.97); }
+  70%  { transform: scale(1.01); }
+  100% { transform: scale(1); }
+}
+
+.task-completing {
+  animation: task-complete 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
