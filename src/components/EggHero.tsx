@@ -87,7 +87,7 @@ export function EggHero({ doneCount, userWeekNumber, startDate, onNavigate }: Pr
             src={born ? rarity.dinoImage : eggImg}
             alt={born ? rarity.label : 'ovo'}
             className="breath"
-            style={{width:120,height:120,objectFit:'contain',filter:`drop-shadow(0 0 18px ${rarity.glowColor})`}}
+            style={{width:160,height:160,objectFit:'contain',filter:`drop-shadow(0 0 28px ${rarity.glowColor})`}}
           />
         </div>
 
