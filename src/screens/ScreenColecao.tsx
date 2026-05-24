@@ -229,12 +229,14 @@ export function ScreenColecao({ journeys, onNavigate }: Props) {
                 padding: '20px 10px 10px',
                 borderRadius: '0 0 var(--r-xl) var(--r-xl)',
               }}>
-                <div style={{ fontSize: 11, color: hasAny ? rarity.color : 'var(--fg3)', fontWeight: 600 }}>
-                  {rarity.dinoName}
-                </div>
-                <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.5)' }}>
-                  {hasAny ? `${earned.length} conquistado${earned.length > 1 ? 's' : ''}` : 'Bloqueado'}
-                </div>
+                {hasAny ? (
+                  <>
+                    <div style={{ fontSize: 11, color: rarity.color, fontWeight: 600 }}>{rarity.dinoName}</div>
+                    <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.5)' }}>{earned.length} conquistado{earned.length > 1 ? 's' : ''}</div>
+                  </>
+                ) : (
+                  <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.35)', fontWeight: 400, letterSpacing: 1 }}>Bloqueado</div>
+                )}
               </div>
             </button>
           );
