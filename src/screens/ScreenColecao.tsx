@@ -56,7 +56,7 @@ export function ScreenColecao({ journeys, onNavigate }: Props) {
   // Compartilhar card
   function shareCard(journey: Journey) {
     const rarity = getRarityById(journey.rarity);
-    const msg = `Meu dino ${rarity.dinoName} nasceu! 🦕\n\nEsta semana completei ${journey.tasksCompleted} tarefas.\n\n"${rarity.whisper}"\n\nOrganize sua semana com leveza:\n→ https://lively-tapioca-82ca71.netlify.app`;
+    const msg = `Meu dino ${rarity.dinoName} nasceu! 🦕\n\nEsta semana completei ${journey.tasksCompleted} tarefas.\n\n"${rarity.whisper}"\n\nOrganize sua semana com leveza:\n→ https://dinotask.netlify.app`;
     if (navigator.share) {
       navigator.share({ text: msg }).catch(() => copyText(msg));
     } else {
@@ -171,7 +171,7 @@ export function ScreenColecao({ journeys, onNavigate }: Props) {
                 Compartilhar {selected.dinoName}
               </p>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 8 }}>
-                <button onClick={() => copyText(`Meu dino ${selected.dinoName} nasceu! 🦕\n\n"${selected.whisper}"\n\n→ https://lively-tapioca-82ca71.netlify.app`)}
+                <button onClick={() => copyText(`Meu dino ${selected.dinoName} nasceu! 🦕\n\n"${selected.whisper}"\n\n→ https://dinotask.netlify.app`)}
                   style={{ padding: 12, borderRadius: 'var(--r-lg)', border: '1px solid var(--border)', background: 'var(--bg3)', color: copied ? 'var(--primary)' : 'var(--fg2)', fontSize: 13, cursor: 'pointer', fontFamily: 'inherit' }}
                 >{copied ? '✓ Copiado!' : '📋 Copiar texto'}</button>
                 <button onClick={() => shareCard(sharing)}
