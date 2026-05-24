@@ -34,6 +34,11 @@ export function EggHero({ doneCount, userWeekNumber, startDate, onNavigate }: Pr
       } catch {}
       setTimeout(() => { setShowBirth(false); setBirthDone(true); setShowColecaoCta(true); }, 3200);
     }
+    // Se voltou abaixo de 10, reseta para que a animação possa tocar novamente
+    if (doneCount < 10 && birthDone) {
+      setBirthDone(false);
+      setShowColecaoCta(false);
+    }
     prevDone.current = doneCount;
   }, [doneCount, birthDone]);
 

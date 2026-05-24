@@ -88,25 +88,34 @@ export function useAppState() {
   }, [state.tasks]); // reavalia sempre que a lista de tarefas muda
 
   useEffect(() => {
-    if (doneTasks.length < 10) return;
-    setState(p => {
-      const alreadyRegistered = p.journeys.some(j => j.weekNumber === userWeekNumber);
-      if (alreadyRegistered) return p;
-      const rarity = getRarityForUserWeek(userWeekNumber);
-      const weekDone = p.tasks.filter(t => t.weekId === getWeekId(p.startDate) && t.done);
-      const newJourney: Journey = {
-        id: nanoid(),
-        weekLabel: `Semana ${userWeekNumber}`,
-        weekNumber: userWeekNumber,
-        dateRange: weekDateRange(p.startDate, userWeekNumber),
-        rarity: rarity.id,
-        dinoImagePath: pickDinoImage(rarity.id),
-        status: 'nasceu',
-        tasksCompleted: weekDone.length,
-        completedTasks: weekDone,
-      };
-      return { ...p, journeys: [...p.journeys, newJourney] };
-    });
+    if (doneTasks.length >= 10) {
+      // Cria jornada da semana atual se ainda não existe
+      setState(p => {
+        const alreadyRegistered = p.journeys.some(j => j.weekNumber === userWeekNumber);
+        if (alreadyRegistered) return p;
+        const rarity = getRarityForUserWeek(userWeekNumber);
+        const weekDone = p.tasks.filter(t => t.weekId === getWeekId(p.startDate) && t.done);
+        const newJourney: Journey = {
+          id: nanoid(),
+          weekLabel: `Semana ${userWeekNumber}`,
+          weekNumber: userWeekNumber,
+          dateRange: weekDateRange(p.startDate, userWeekNumber),
+          rarity: rarity.id,
+          dinoImagePath: pickDinoImage(rarity.id),
+          status: 'nasceu',
+          tasksCompleted: weekDone.length,
+          completedTasks: weekDone,
+        };
+        return { ...p, journeys: [...p.journeys, newJourney] };
+      });
+    } else {
+      // Se caiu abaixo de 10, remove a jornada da semana atual (card ainda não conquistado)
+      setState(p => {
+        const hasCurrentWeek = p.journeys.some(j => j.weekNumber === userWeekNumber);
+        if (!hasCurrentWeek) return p;
+        return { ...p, journeys: p.journeys.filter(j => j.weekNumber !== userWeekNumber) };
+      });
+    }
   }, [doneTasks.length, userWeekNumber]);
 
   return { state, weekTasks, doneTasks, userWeekNumber, addTask, toggleTask, editTask, deleteTask, completePending, dismissPending, reviewAllPending, setUserName, deleteJourney, deleteAllJourneys };
